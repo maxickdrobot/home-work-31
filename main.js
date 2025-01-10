@@ -42,7 +42,9 @@ async function getData(segment) {
     return error;
   }
 }
+
 getData("posts/1");
+getData("posts/1000");
 
 /*
  *
@@ -92,8 +94,7 @@ async function postData(segment, data) {
 }
 
 postData("/posts", { title: "it's new post", body: "lorem ipsum dolor", userId: 21 });
-
-
+postData("/post", { title: "it's new post", body: "lorem ipsum dolor", userId: 21 });
 
 /*
  *
@@ -145,8 +146,7 @@ async function putData(id, data) {
 }
 
 putData(17, { title: "New Title", body: "Updated post text", userId: 8 });
-
-
+putData(1100, { title: "New Title", body: "Updated post text", userId: 8 });
 
 /*
  *
@@ -198,8 +198,7 @@ async function patchData(id, data) {
 }
 
 patchData(55, { title: "New Title" });
-
-
+patchData(5500, { title: "New Title" });
 
 /*
  *
@@ -247,4 +246,5 @@ async function deleteData(id) {
   }
 }
 
+deleteData(5022);
 deleteData(50);
