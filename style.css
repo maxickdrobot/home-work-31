@@ -1,0 +1,12 @@
+.post {
+    display: flex;
+    gap: 2%;
+    margin: 10px 0;
+    padding: 10px 2%;
+    background-color: #dfdfdf;
+    border-radius: 5px;
+}
+
+.post--error {
+    background-color: #eec1c1;
+}

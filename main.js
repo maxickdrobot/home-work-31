@@ -1,5 +1,44 @@
 console.log('#14. JavaScript homework example file')
 
+function renderPosts(data, idCntainer) {
+  const container = document.getElementById(idCntainer);
+
+  if (data instanceof Error) {
+    container.innerHTML += `
+        <div class="post post--error">
+          <h3>${data}</h3>
+        </div>
+      `;
+    return;
+  }
+
+  if (Array.isArray(data)) {
+    data.forEach(post => {
+      const postElement = document.createElement('div');
+      postElement.classList.add('post');
+      postElement.innerHTML = `
+          <p> User id: ${post.userId}</p>
+          <div>
+            <h3>${post.title}</h3>
+            <p>${post.body}</p>
+          </div>
+        `;
+      container.appendChild(postElement); 
+    });
+  } else {
+    const postElement = document.createElement('div');
+    postElement.classList.add('post');
+    postElement.innerHTML = `
+        <p> User id: ${data.userId}</p>
+        <div>
+          <h3>${data.title}</h3>
+          <p>${data.body}</p>
+        </div>
+      `;
+    container.appendChild(postElement);
+  }
+}
+
 /*
  *
  * #1
@@ -36,15 +75,18 @@ async function getData(segment) {
     }
     const data = await response.json();
     console.log(data);
+    renderPosts(data, "task1__post-container");
     return data;
   } catch (error) {
     console.error(error);
+    renderPosts(error, "task1__post-container");
     return error;
   }
 }
 
-getData("posts/1");
+getData("posts/49");
 getData("posts/1000");
+
 
 /*
  *
@@ -86,9 +128,11 @@ async function postData(segment, data) {
     }
     const result = await response.json();
     console.log(`Successful response: ${result}`);
+    renderPosts(result, "task2__post-container");
     return result;
   } catch (error) {
     console.error(error);
+    renderPosts(error, "task2__post-container");
     return error;
   }
 }
@@ -138,9 +182,11 @@ async function putData(id, data) {
 
     const updatedData = await response.json();
     console.log(`Updated object: ${updatedData}`);
+    renderPosts(updatedData, "task3__post-container");
     return updatedData;
   } catch (error) {
     console.error(error);
+    renderPosts(error, "task3__post-container");
     return error;
   }
 }
@@ -183,16 +229,16 @@ async function patchData(id, data) {
       },
       body: JSON.stringify(data),
     });
-
     if (!response.ok) {
       throw new Error(`Request failed: ${response.statusText} (Code ${response.status})`);
     }
-
     const updatedData = await response.json();
     console.log(`Updated object: ${updatedData}`);
+    renderPosts(updatedData, "task4__post-container");
     return updatedData;
   } catch (error) {
     console.error(error);
+    renderPosts(error, "task4__post-container");
     return error;
   }
 }
@@ -230,18 +276,19 @@ patchData(5500, { title: "New Title" });
 
 async function deleteData(id) {
   try {
-    const response = await fetch(`https://jsonplaceholder.typicode.com/postks/${id}`, {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
       throw new Error(`Failed to delete post with id [${id}]. Status: [${response.status}]`);
     }
-
-    console.log(`Post with id [${id}] has been successfully deleted.`);
+    const message = `Post with id [${id}] has been successfully deleted.`;
+    console.log(message);
+    renderPosts({ title: 'Deletion Successful', body: message }, "task5__post-container");
     return true;
-
   } catch (error) {
     console.error(error);
+    renderPosts(error, "task5__post-container");
     return error;
   }
 }
